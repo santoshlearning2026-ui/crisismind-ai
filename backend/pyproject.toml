@@ -1,0 +1,150 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crisismind-ai"
+version = "1.0.0"
+description = "Autonomous Infrastructure Risk Prediction Agent"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [
+    {name = "Santosh Learning", email = "santosh.learning2026@gmail.com"}
+]
+license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    "fastapi==0.104.1",
+    "uvicorn[standard]==0.24.0",
+    "pydantic==2.5.0",
+    "pydantic-settings==2.1.0",
+    "psycopg2-binary==2.9.9",
+    "SQLAlchemy==2.0.23",
+    "alembic==1.13.1",
+    "langchain==0.1.1",
+    "langchain-google-genai==0.0.10",
+    "langraph==0.0.22",
+    "chromadb==0.4.21",
+    "scikit-learn==1.3.2",
+    "xgboost==2.0.3",
+    "lightgbm==4.1.0",
+    "pandas==2.1.3",
+    "polars==0.19.12",
+    "structlog==23.2.0",
+    "python-dotenv==1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==7.4.3",
+    "pytest-asyncio==0.21.1",
+    "pytest-cov==4.1.0",
+    "pytest-mock==3.12.0",
+    "black==23.12.0",
+    "isort==5.13.2",
+    "pylint==3.0.3",
+    "mypy==1.7.1",
+    "flake8==6.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/santoshlearning2026-ui/crisismind-ai"
+Documentation = "https://github.com/santoshlearning2026-ui/crisismind-ai/tree/main/docs"
+Repository = "https://github.com/santoshlearning2026-ui/crisismind-ai.git"
+Issues = "https://github.com/santoshlearning2026-ui/crisismind-ai/issues"
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers"
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "api: API tests",
+    "slow: Slow running tests",
+]
+
+[tool.black]
+line-length = 100
+target-version = ['py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 100
+target_version = "py312"
+known_first_party = ["app"]
+known_third_party = ["fastapi", "sqlalchemy", "pydantic"]
+default_section = "THIRDPARTY"
+multi_line_mode = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_any_generics = true
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "langchain.*",
+    "chromadb.*",
+    "xgboost.*",
+    "lightgbm.*",
+]
+ignore_missing_imports = true
+
+[tool.pylint.messages_control]
+disable = [
+    "C0111",  # missing-docstring
+    "R0903",  # too-few-public-methods
+    "R0913",  # too-many-arguments
+]
+
+[tool.coverage.run]
+branch = true
+source = ["app"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
